@@ -1,0 +1,267 @@
+1. Класс **Page** - формирование главной страницы. Наследуется от класса  Component
+
+   ```
+   interface IPage {
+      cardList: HTMLElement[];
+   }
+   ```
+   Имеет следующие поля и методы:
+
+   **Поля:**
+
+   - ``_counterBasket`` - HTMLElement;
+   - ``_cardList``- HTMLElement;
+   - ``_wrapper``- HTMLImageElement;
+   - ``_basket``- HTMLElement;
+   
+   **Конструктор:**
+
+   constructor(container: HTMLElement, events: IEvents)
+
+   **Методы:**
+
+   - ``set counter(value: number | null)`` - изменить счетчик товара в корзине на главной странице.
+   - ``set catalog(items: HTMLElement[])`` - вывести список карточек.
+   - ``set locked(value: boolean)`` - установка или снятие блока прокрутки страницы.
+
+2. Класс **Card** - описание карточки товара. Наследуется от класса Component. Имеет двух наследников CardPreview и CardBasket
+
+   ```
+   interface ICard {
+	   category: string;
+	   title: string;
+	   description: string;
+	   image: string;
+	   price: number;
+   }
+   ```
+
+   Имеет следующие поля и методы:
+
+   **Поля:**
+
+   - ``_category`` - HTMLElement;
+   - ``_title``- HTMLElement;
+   - ``_image``- HTMLImageElement;
+   - ``_price``- HTMLElement;
+   - ``_colors``- <Record<string, string>>;
+
+    **Конструктор:**
+
+   constructor(container: HTMLElement, actions?: IActions)
+
+   **Методы:**
+
+   - ``set category(value: string)`` - принимает строку с сервера, устанавливает категорию.
+   - ``set title(value: string)`` - принимает строку с сервера, устанавливает заголовок.
+   - ``set image(value: string)`` - принимает строку с сервера, устанавливает изображение.
+   - ``set price(value: number)`` - принимает номер с сервера, устанавливает цену.
+
+   Класс  **CardPreview** - описание карточки товара в превью  . Наследуется от класса Card.
+
+   ```
+   interface ICardPreview {
+	   text: string;
+   }  
+   ```
+
+   Имеет следующие поля и методы:
+
+   **Поля:**
+
+   - ``_text`` - HTMLElement;
+   - ``_button``- HTMLElement;
+
+   **Конструктор:**
+
+   constructor(container: HTMLElement, actions?: IActions)
+
+   **Методы:**
+
+   - ``set text(value: string)`` - принимает строку с сервера, устанавливает текст.
+
+   Класс  **CardBasket** - описание карточки товара в превью  . Наследуется от класса Card.
+
+   ```
+   interface ICardBasket {
+	   index: number;
+	   title: string;
+	   price: number;
+   }   
+   ```
+
+   Имеет следующие поля и методы:
+
+   **Поля:**
+
+   - ``_index`` - HTMLElement;
+   - ``_title`` - HTMLElement;
+   - ``_price`` - HTMLElement;
+   - ``_button`` - HTMLElement;
+
+   **Конструктор:**
+
+   constructor(container: HTMLElement, actions?: IActions)
+
+   **Методы:**
+
+   - ``set index(value: number)`` - принимает номер, устанавливает индекс.
+   - ``set title(value: string)`` - принимает строку, устанавливает текст.
+   - ``set price(value: number | null)`` - принимает номер, устанавливает цену.
+
+
+3. Класс **Basket** - описание корзины. Наследует класс Component
+
+   ```
+   interface IBasket {
+	   items: HTMLElement[];
+	   total: number;
+   }
+   ```
+
+   Имеет следующие поля и методы:
+
+   **Поля:**
+
+   - ``_list`` - HTMLElement;
+   - ``button``- HTMLButtonElement;;
+   - ``_total``- HTMLElement;
+
+   **Конструктор:**
+
+   constructor(container: HTMLElement, events: EventEmitter)
+
+   **Методы:**
+
+   - ``set items(items: HTMLElement[])`` - вставить данные в корзину.
+   - ``set total(price: number)`` - посчитать общую стоимость товара.
+
+
+4. Класс **Form<T>** - класс для работы с формами. Наследуется от класса Component. Имеет двух наследников Order и Contacts
+
+   ```
+   interface IFormValid {
+	   valid: boolean;
+	   errors: string[];
+   }
+   ```
+
+   Имеет следующие поля и методы:
+
+   **Поля:**
+
+   - ``_submit`` - HTMLButtonElement;
+   - ``_errors``- HTMLElement;
+
+   **Конструктор:**
+
+   constructor(protected container: HTMLFormElement, protected events: IEvents)
+
+   **Методы:**
+
+   - ``InInputChange`` -обработчик событий ввода.
+   - ``set valid`` - контролирует активность кнопки отправки в зависимости от валидности формы.
+   - ``set errors`` - устанавливает и отображает ошибки валидации формы.
+   - ``render`` - показывает состояние формы.
+
+    Класс **Order** - отображение модального окна заполнения адреса. Наследуется от класса Form
+
+   ```
+   interface IOrderForm {
+	   payment?: string;
+	   address?: string;
+	   phone?: string;
+	   email?: string;
+	   total?: string | number;
+   }
+   ```
+
+   Имеет следующие поля и методы:
+
+   **Поля:**
+
+   - ``_buttons`` - HTMLButtonElement;
+
+   **Конструктор:**
+
+   constructor(container: HTMLFormElement, events: IEvents)
+
+   **Методы:**
+
+   - ``set payment(name: string)`` - переключение между кнопками.
+   - ``set address`` - ввод адреса доставки.
+     
+   Класс **Contacts** - отображение модального окна заполнения почты и телефона. Наследуется от  класса Form
+
+   ```
+   interface IOrderForm {
+	   payment?: string;
+	   address?: string;
+	   phone?: string;
+	   email?: string;
+	   total?: string | number;
+   }   
+   ```
+
+   **Конструктор:**
+
+   constructor(container: HTMLFormElement, events: IEvents)
+
+   **Методы:**
+
+   - ``set phone`` - ввод телефона.
+   - ``set email`` - ввод почты.
+
+7. Класс **Success** - отображение модального удачного заказа. Наследуется от  класс Component
+
+   ```
+   interface ISuccess {
+	   total: number;
+   }
+   ```
+
+    ```
+   interface ISuccessActions {
+	   onClick: () => void;
+   }
+   ```
+   Имеет следующие поля и методы:
+
+   **Поля:**
+
+   - ``_close`` -  HTMLElement;
+   - ``_total``- HTMLElement;
+
+   **Конструктор:**
+
+   constructor(container: HTMLElement, actions: ISuccessActions)
+
+   **Методы:**
+
+   - ``set total`` - устанавливет текст в элемент. 
+
+8. Класс **Modal** - класс для работы с модальным окном. Наследуется от класса Component
+
+   ```
+   interface IModalData {
+	   content: HTMLElement;
+   }
+   ```
+
+   Имеет следующие поля и методы:
+   
+   **Поля:**
+
+   - ``_closeButton`` -  HTMLButtonElement;
+   - ``_content``- HTMLElement;
+
+   **Конструктор:**
+
+   constructor(container: HTMLElement, events: IEvents)
+
+   **Методы:**
+
+   - ``set content`` - определяет контент показа в модальном окне.
+   - ``open`` - открывает модальное окно.
+   - ``close`` - закрывает модальное окно.
+   - ``render`` - рендерит модальное окно.

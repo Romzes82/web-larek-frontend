@@ -6,6 +6,7 @@ interface ICounter {
     amount: number;
 }
 
+//пример вьюхи
 export class Counter extends Component<ICounter> {
     protected _counter: HTMLElement;
     protected _increment: HTMLButtonElement;
