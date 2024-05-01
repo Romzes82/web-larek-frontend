@@ -1,20 +1,20 @@
 import {Model} from './base/Model';
-// import {IAppState, ICardItem} from '../types';
+import {ICard, IOrder, TFormErrors} from '../types';
 
 
 interface IAppState {
-    cardList: ICardItem[];
+    cardList: ICard[];
     basket: string[];
-    // order: IOrder | null;
+    order: IOrder | null;
     preview: string | null;
-    // formErrors: FormErrors;
+    formErrors: TFormErrors;
  }
 
 export class AppState extends Model<IAppState> {
-    cardList: ICardItem[];
+    cardList: ICard[];
 
     //Вывести каталог
-    setCatalog(items: ICardItem[]) {
+    setCatalog(items: ICard[]) {
 		this.cardList = items;
 		this.emitChanges('items:changed',  this.cardList);
     }

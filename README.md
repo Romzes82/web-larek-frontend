@@ -41,18 +41,31 @@ npm run build
 yarn build
 ```
 
-## Описание данных
+## Описание основных данных
 
 Карточка товара
 
 ```
 export interface ICard {
-	id: string;
-	description: string;
-	image: string;
-	title: string;
-	category: string;
-	price: number | null;
+   id: string;
+   description: string;
+   image: string;
+   title: string;
+   category: string;
+   price: number | null;
+}
+
+```
+
+Перечисление категорий карточек
+
+```
+export enum CardCategory {
+    soft =  "софт-скил",
+    other = "другое",
+    additional = "дополнительное",
+    button = "кнопка",
+    hard = "хард-скил"
 }
 ```
 
@@ -68,9 +81,8 @@ export interface IBasket {
 Модель для хранения данных карточек товара
 
 ```
-export interface ICardCatalog {
-    products: ICard[];
-    preview: string;
+export interface ICardList {    
+    items: ICard[];
 }
 ```
 
@@ -93,22 +105,14 @@ export interface IOrder {
 export type TOrderForm = Omit<IOrder, 'total' | 'items'>;
 ```
 
-Созданный заказ
-
-```
-export interface IOrderResult {
-	id: string;
-	total: number;
-}
-```
-
-
 ## Архитектура приложения
 
 Код приложения разделен на слои согласно парадигме MVP: 
 - слой представления, отвечает за отображение данных на странице, 
 - слой данных, отвечает за хранение и изменение данных
 - презентер, отвечает за связь представления и данных.
+
+![UML представление](uml_larek_1.png)
 
 ### Базовый код
 

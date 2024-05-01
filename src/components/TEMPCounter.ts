@@ -46,5 +46,6 @@ export class Counter extends Component<ICounter> {
 
 }
 
-
+// const root = ensureElement<HTMLElement>('main');
+// const counter = new Counter(root);
 // counter.render({amount: 5});

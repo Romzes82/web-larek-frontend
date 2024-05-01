@@ -1,65 +1,4 @@
-//Интерфейс данных товара с сервера
-interface ICardItem {
-	id: string;
-	title: string;
-	description: string;
-	category: string;
-	image: string;
-	price: number | null;
-}
-
-// +++++++++++++++++++++
-// export interface ICard {
-// 	id: string;
-// 	description: string;
-// 	image: string;
-// 	title: string;
-// 	category: string;
-// 	price: number | null;
-// }
-
-// export interface IBasket {
-// 	items: string[];
-// 	total: number;
-// }
-
-interface IAppState {
-    cardList: ICardItem[];
-    basket: string[];
-    // order: IOrder | null;
-    preview: string | null;
-    // formErrors: FormErrors;
- }
-
-// export interface ICardfData {
-//     products: ICard[];
-//     preview: string | null; // свойство, в коротом хранится id выбранной карточки
-//     addCard(card: ICard): void;
-//     deleteCard(cardId: string, payload: Function | null): void;
-//     updateCard(card: ICard, payload: Function | null): void;
-//     getCard(cardId: string): ICard;
-//     checkValidation(data: Record<keyof TCardInfo, string>): boolean;
-// }
-
-// export type TCardInfo = Pick<ICard, 'name' | 'link'>;
-
-// export interface IOrder {
-// 	payment: string;
-// 	email: string;
-// 	phone: string;
-// 	address: string;
-// 	items: string[];
-// 	total: number;
-// }
-
-// export type TOrderForm = Omit<IOrder, 'total' | 'items'>;
-
-// export interface IOrderResult {
-// 	id: string;
-// 	total: number;
-// }
-
-interface IProductItem {
+export interface ICard {
         id: string;
         description: string;
         image: string;
@@ -68,18 +7,42 @@ interface IProductItem {
         price: number | null;
 }
 
-interface IProductList {
-    items: IProductItem[];
+// interface IProductList {
+export interface ICardList {    
+    items: ICard[];
 }
 
-interface IOrderSuccess {
+// перечисление категория карточек
+export enum CardCategory {
+    soft =  "софт-скил",
+    other = "другое",
+    additional = "дополнительное",
+    button = "кнопка",
+    hard = "хард-скил"
+}
+
+export interface IAppState {
+    cardList: ICardList;
+    basket: string[];
+    order: IOrder | null;
+    preview: string | null;
+    formErrors: TFormErrors;
+ }
+
+ //алиас ошибки формы
+export type TFormErrors = Partial<Record<keyof IOrder, string>>;
+
+
+
+export interface IOrderSuccess {
 	id: string;
 	total: number;
     // "id": "28c57cb4-3002-4445-8aa1-2a06a5055ae5",
     // "total": 2200
 }
 
-interface IOrder {
+//Интерфейс заказа
+export interface IOrder {
     payment: string,
     email: string,
     phone: string,
@@ -97,11 +60,33 @@ interface IOrder {
 // ]
 }
 
-// используется в превью и в каталоге
-enum productCategory {
-       soft =  "софт-скил",
-       other = "другое",
-       additional = "дополнительное",
-       button = "кнопка",
-       hard = "хард-скил"
+// Адиас формы заказа
+export type TOrderForm = Omit<IOrder, 'total' | 'items'>;
+
+
+export interface IBasket {
+	items: string[];
+	total: number;
 }
+
+//Интерфейс формы успешного заказа
+interface ISuccess {
+	total: number;
+  }
+
+//Интерфейс события
+interface ISuccessActions {
+	onClick: () => void;
+}
+
+interface IModal {
+	content: HTMLElement;
+}
+
+//Интерфейс валидации формы
+interface IFormValid {
+	valid: boolean;
+	errors: string[];
+}
+
+
