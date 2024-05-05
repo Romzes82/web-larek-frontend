@@ -1,4 +1,4 @@
-import {IEvents} from "./events";
+import {IEvents} from "./Events";
 
 // Гарда для проверки на модель
 export const isModel = (obj: unknown): obj is Model<any> => {
@@ -9,7 +9,9 @@ export const isModel = (obj: unknown): obj is Model<any> => {
  * Базовая модель, чтобы можно было отличить ее от простых объектов с данными
  */
 export abstract class Model<T> {
+    // Partial - условный тип, который делает поля опциональными;
     constructor(data: Partial<T>, protected events: IEvents) {
+        // this - объект-акцептор, data - донор
         Object.assign(this, data);
     }
 

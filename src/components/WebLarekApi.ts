@@ -1,5 +1,11 @@
-import {Api, ApiListResponse} from './base/api';
-import {IAppState, ICard, IOrder} from '../types';
+// import {Api, ApiListResponse} from './base/Api';
+
+import {ApiListResponse, IAppState, ICard, IOrder} from '../types';
+import { Api } from './base/Api';
+
+interface ISuccessfulForm {
+    id: string;
+}
  
     export class WebLarekApi extends Api {
     readonly cdn: string
@@ -27,7 +33,7 @@ import {IAppState, ICard, IOrder} from '../types';
 		}));
     }
 
-    //возврат данных по заказу
+    //возврат данных по заказу, н-р {"id":"d0260fd6-7347-43c1-9626-7d1cdc02a5a4","total":2200}
     orderCard(order: IOrder): Promise<IOrder> {
         return this.post(`/order`, order).then((data: IOrder) => data);
     }

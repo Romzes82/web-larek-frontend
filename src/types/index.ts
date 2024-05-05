@@ -7,22 +7,43 @@ export interface ICard {
         price: number | null;
 }
 
+//Интерфейс данных карточки с сервера
+// interface ICardItem {
+// 	id: string;
+// 	title: string;
+// 	description: string;
+// 	category: string;
+// 	image: string;
+// 	price: number | null;
+// }
+
+// УДАЛИТЬ
 // interface IProductList {
-export interface ICardList {    
-    items: ICard[];
-}
+// export interface ICardList {    
+//     items: ICard[];
+// }
 
 // перечисление категория карточек
 export enum CardCategory {
-    soft =  "софт-скил",
-    other = "другое",
-    additional = "дополнительное",
-    button = "кнопка",
-    hard = "хард-скил"
+    // soft= 'софт-скил',
+    // other = 'другое' ,
+    // additional = 'дополнительное',
+    // button = 'кнопка',
+    // hard = 'хард-скил'
+
+    'софт-скил' = 'soft',
+    'другое' = 'other',
+    'дополнительное' = 'additional',
+    'кнопка' = 'button',
+    'хард-скил' = 'hard'
+}
+
+export type Machine = {
+    categ: CardCategory
 }
 
 export interface IAppState {
-    cardList: ICardList;
+    cardList: ICard[];
     basket: string[];
     order: IOrder | null;
     preview: string | null;
@@ -33,22 +54,21 @@ export interface IAppState {
 export type TFormErrors = Partial<Record<keyof IOrder, string>>;
 
 
-
+// Интерфейс для типизации ответа сервера в случае успешного оформления заказа
 export interface IOrderSuccess {
 	id: string;
 	total: number;
-    // "id": "28c57cb4-3002-4445-8aa1-2a06a5055ae5",
-    // "total": 2200
 }
+
 
 //Интерфейс заказа
 export interface IOrder {
-    payment: string,
-    email: string,
-    phone: string,
-    address: string,
-    total: number,
-    items: string[]
+    payment: string;
+    email: string;
+    phone: string;
+    address: string;
+    total: number;
+    items: string[];
 // "payment": "online",
 // "email": "test@test.ru",
 // "phone": "+71234567890",
@@ -60,7 +80,7 @@ export interface IOrder {
 // ]
 }
 
-// Адиас формы заказа
+// Алиас формы заказа
 export type TOrderForm = Omit<IOrder, 'total' | 'items'>;
 
 
@@ -69,7 +89,7 @@ export interface IBasket {
 	total: number;
 }
 
-//Интерфейс формы успешного заказа
+//Интерфейс модалки успешного заказа
 interface ISuccess {
 	total: number;
   }
@@ -88,5 +108,29 @@ interface IFormValid {
 	valid: boolean;
 	errors: string[];
 }
+
+export type ApiListResponse<Type> = {
+    total: number,
+    items: Type[]
+};
+
+//Интерфейс события
+export interface IActions {
+    onClick: (event: MouseEvent) => void;
+}
+
+export interface IPage {
+    cardList: HTMLElement[];
+}
+
+
+//Интерфейс карточки в корзине
+export interface ICardBasket {
+	index: number;
+	title: string;
+	price: number;
+}  
+
+// export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
 
 
