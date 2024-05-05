@@ -8,6 +8,7 @@ export class Card<T> extends Component<ICard> {
     protected _title: HTMLElement;
     protected _image: HTMLImageElement;
     protected _price: HTMLElement;
+    // protected _colors: <Record<string, string>>
     protected _colors = <Record<string, string>> {
         "софт-скил": "soft",
         "другое": "other",
