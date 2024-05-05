@@ -18,7 +18,7 @@ export class Basket extends Component<IBasket> {
       this.items = [];
     }
   
-    //Вставляем данные в корзину
+    //Заполнить данными в корзину
     set items(items: HTMLElement[]) {
       if (items.length) {
           this._list.replaceChildren(...items);
@@ -28,7 +28,7 @@ export class Basket extends Component<IBasket> {
       }
     }
   
-    //Устанавливаем общую сумму товаров в корзине
+    //Установить сумму всех товаров в корзине
     set total(total: number) {
       this.setText(this._total, `${total.toString()} синапсов`);
     }

@@ -15,7 +15,7 @@ interface ISuccessfulForm {
         this.cdn = cdn;
     }
     
-    //получение списка карточек
+    //получить список всех карточек
     getCardList(): Promise<ICard[]> {
         return this.get('/product').then((data: ApiListResponse<ICard>) =>
 			data.items.map((item) => ({
@@ -25,7 +25,7 @@ interface ISuccessfulForm {
 		);
     }
 
-    //получение данных по id
+    //получить данные карточки по ее id
     getCardItem(id: string): Promise<ICard> {
         return this.get(`/product/${id}`).then((item: ICard) => ({
 			...item,
