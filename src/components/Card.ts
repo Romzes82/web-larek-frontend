@@ -1,5 +1,5 @@
 import { Component } from './base/Component';
-import { CardCategory, ICard, ICardBasket, Machine } from '../types';
+import { CardCategoryEnum, ICard, ICardBasket } from '../types';
 import { ensureElement } from '../utils/utils'
 import { IActions } from "../types"
 
@@ -8,14 +8,6 @@ export class Card<T> extends Component<ICard> {
     protected _title: HTMLElement;
     protected _image: HTMLImageElement;
     protected _price: HTMLElement;
-    // protected _colors: <Record<string, string>>
-    protected _colors = <Record<string, string>> {
-        "софт-скил": "soft",
-        "другое": "other",
-        "дополнительное": "additional",
-        "кнопка": "button",
-        "хард-скил": "hard"
-      }
     
     constructor(container: HTMLElement, actions?: IActions) {
         super(container);
@@ -26,13 +18,10 @@ export class Card<T> extends Component<ICard> {
     if (actions?.onClick) container.addEventListener('click', actions.onClick);
     }
 
-        // set category(value: string) {this.setText(this._category, value);
-        // this._category.className = `card__category card__category_${this._colors[value]} }
-    
-    set category(value: string) {
-        this.setText(this._category, value);
-        this._category.className = `card__category card__category_${this._colors[value]}`
-    }
+     set category(value: string) {
+            this.setText(this._category, value);
+            this._category.className = `card__category card__category_${CardCategoryEnum[value as keyof typeof CardCategoryEnum]}`
+        }
 
     set title(value: string) {
         this.setText(this._title, value);

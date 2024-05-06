@@ -24,22 +24,12 @@ export interface ICard {
 // }
 
 // перечисление категория карточек
-export enum CardCategory {
-    // soft= 'софт-скил',
-    // other = 'другое' ,
-    // additional = 'дополнительное',
-    // button = 'кнопка',
-    // hard = 'хард-скил'
-
+export enum CardCategoryEnum {
     'софт-скил' = 'soft',
     'другое' = 'other',
     'дополнительное' = 'additional',
     'кнопка' = 'button',
     'хард-скил' = 'hard'
-}
-
-export type Machine = {
-    categ: CardCategory
 }
 
 export interface IAppState {

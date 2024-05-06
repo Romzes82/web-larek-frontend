@@ -25,7 +25,7 @@ const page = new Page(document.body, events);//Создаем объект гл�
 const basket = new Basket(cloneTemplate(basketTemplate), events);//Создаем переменную корзины
 const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);//Создаем переменную модального окна
 
-
+console.log(API_URL, CDN_URL);
 
 //Получение и отображение списка карточек
 api.getCardList()
