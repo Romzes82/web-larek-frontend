@@ -7,7 +7,7 @@ interface ISuccessfulForm {
     id: string;
 }
  
-    export class WebLarekApi extends Api {
+export class WebLarekApi extends Api {
     readonly cdn: string
 
     constructor(cdn: string, baseUrl: string, options?: RequestInit) {
@@ -20,7 +20,7 @@ interface ISuccessfulForm {
         return this.get('/product').then((data: ApiListResponse<ICard>) =>
 			data.items.map((item) => ({
 				...item,
-				image: this.cdn + item.image,
+                image: this.cdn + item.image,
 			}))
 		);
     }

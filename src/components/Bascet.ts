@@ -10,9 +10,9 @@ export class Basket extends Component<IBasket> {
   
     constructor(container: HTMLElement, protected events: EventEmitter) {
       super(container);
-        this._list = ensureElement<HTMLElement>('.basket__list', this.container);
-        this.button = this.container.querySelector('.basket__button');
-      this._total = this.container.querySelector('.basket__price');
+      this._list = ensureElement<HTMLElement>('.basket__list', this.container);
+      this.button = ensureElement<HTMLButtonElement>('.basket__button', this.container);
+      this._total = ensureElement<HTMLElement>('.basket__price');
       if(this.button) this.button.addEventListener('click', () => events.emit('order:open'));
       
       this.items = [];

@@ -48,7 +48,10 @@ events.on('items:changed', () => {
     });
 });
 
-//Открытие корзины, отображение товаров и суммы заказа
+console.log(basket.button);
+console.log(appState.getTotal());
+
+//Открытие корзины, рендеринг его содержимого: товаров и суммы заказа
 events.on('basket:open', () => {
     basket.setDisabled(basket.button, appState.statusBasket);
     basket.total = appState.getTotal();
@@ -67,3 +70,6 @@ events.on('basket:open', () => {
         content: basket.render()
     })
 })
+
+// ToDo заменить Locked на Toggle в Card
+// Card<T> - del <T> ?

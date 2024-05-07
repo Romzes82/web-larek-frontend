@@ -11,17 +11,17 @@ export class Card<T> extends Component<ICard> {
     
     constructor(container: HTMLElement, actions?: IActions) {
         super(container);
-        this._category = container.querySelector('.card__category');
+        this._category = ensureElement<HTMLElement>('.card__category', container);
         this._title = ensureElement<HTMLElement>('.card__title', container);
-        this._image = container.querySelector('.card__image');
+        this._image = ensureElement<HTMLImageElement>('.card__image', container);
         this._price = ensureElement<HTMLElement>('.card__price', container);
     if (actions?.onClick) container.addEventListener('click', actions.onClick);
     }
 
-     set category(value: string) {
-            this.setText(this._category, value);
-            this._category.className = `card__category card__category_${CardCategoryEnum[value as keyof typeof CardCategoryEnum]}`
-        }
+    set category(value: string) {
+        this.setText(this._category, value);
+        this._category.className = `card__category card__category_${CardCategoryEnum[value as keyof typeof CardCategoryEnum]}`
+    }
 
     set title(value: string) {
         this.setText(this._title, value);
