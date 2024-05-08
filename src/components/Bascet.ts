@@ -1,14 +1,14 @@
 import { IBasket } from "../types";
 import { createElement, ensureElement } from "../utils/utils";
 import { Component } from "./base/Component";
-import { EventEmitter } from "./base/Events";
+import { EventEmitter, IEvents } from "./base/Events";
 
 export class Basket extends Component<IBasket> {
     protected _list: HTMLElement;
     button: HTMLButtonElement;
     protected _total: HTMLElement;
   
-    constructor(container: HTMLElement, protected events: EventEmitter) {
+  constructor(container: HTMLElement, protected events: IEvents) {
       super(container);
       this._list = ensureElement<HTMLElement>('.basket__list', this.container);
       this.button = ensureElement<HTMLButtonElement>('.basket__button', this.container);

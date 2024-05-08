@@ -15,7 +15,7 @@ import {IAppState, ICard, IOrder, TFormErrors} from '../types';
 export class AppState extends Model<IAppState> {
     cardList: ICard[];
     basket: ICard[] = [];
-	order: IOrder = {address: '', payment: '', email: '', total: 0, phone: '',items: []};
+	  order: IOrder = {address: '', payment: '', email: '', total: 0, phone: '',items: []};
     preview: string | null;
     formErrors: TFormErrors = {};
 

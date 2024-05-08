@@ -38,4 +38,9 @@ export class Page extends Component<IPage> {
         this._wrapper.classList.remove('page__wrapper_locked');
     }
   }
+  // Переключить класс
+  // toggleClass(element: HTMLElement, className: string, force?: boolean) {
+  //   element.classList.toggle(className, force);
+  // }
+
 }
