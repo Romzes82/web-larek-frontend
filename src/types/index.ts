@@ -43,31 +43,25 @@ export interface IAppState {
  //алиас ошибки формы
 export type TFormErrors = Partial<Record<keyof IOrder, string>>;
 
-
 // Интерфейс для типизации ответа сервера в случае успешного оформления заказа
 export interface IOrderSuccess {
 	id: string;
 	total: number;
 }
 
-
 //Интерфейс заказа
-export interface IOrder {
-    payment: string;
-    email: string;
-    phone: string;
-    address: string;
-    total: number;
+// export interface IOrder {
+//     payment: string;
+//     email: string;
+//     phone: string;
+//     address: string;
+//     total: number;
+//     items: string[];
+// }
+//Интерфейс заказа
+
+export interface IOrder extends IOrderForm {
     items: string[];
-// "payment": "online",
-// "email": "test@test.ru",
-// "phone": "+71234567890",
-// "address": "Spb Vosstania 1",
-// "total": 2200,
-// "items": [
-//     "854cef69-976d-4c2a-a18c-2aa45046c390",
-//     "c101ab44-ed99-4a54-990d-47aa2bb4e7d9"
-// ]
 }
 
 // Алиас формы заказа
@@ -79,24 +73,18 @@ export interface IBasket {
 	total: number;
 }
 
-//Интерфейс модалки успешного заказа
-interface ISuccess {
-	total: number;
-  }
+// //Интерфейс модалки успешного заказа
+// interface ISuccess {
+// 	total: number;
+//   }
 
 //Интерфейс события
-interface ISuccessActions {
+export interface ISuccessActions {
 	onClick: () => void;
 }
 
-interface IModal {
+export interface IModal {
 	content: HTMLElement;
-}
-
-//Интерфейс валидации формы
-interface IFormValid {
-	valid: boolean;
-	errors: string[];
 }
 
 export type ApiListResponse<Type> = {
@@ -113,6 +101,10 @@ export interface IPage {
     cardList: HTMLElement[];
 }
 
+//Интерфейс карточки товара в превью
+export interface ICardPreview {
+	text: string;
+}  
 
 //Интерфейс карточки в корзине
 export interface ICardBasket {
@@ -120,6 +112,42 @@ export interface ICardBasket {
 	title: string;
 	price: number;
 }  
+
+//Интерфейс валидации формы
+export interface IFormValid {
+	valid: boolean;
+	errors: string[];
+}
+
+
+//Тип ошибки формы
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
+
+//Интерфейс заказа
+export interface IOrder extends IOrderForm {
+    items: string[];
+}
+
+//Интерффейс формы заказа
+export interface IOrderForm {
+	payment?: string;
+	address?: string;
+	phone?: string;
+	email?: string;
+	total?: string | number;
+}
+
+//Интерфейс формы успешного заказа
+export interface ISuccess {
+	total: string;
+  }
+
+export interface ISuccessfulForm {
+    id: string;
+    total: string;
+}
+
+
 
 // export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
 

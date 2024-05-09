@@ -1,5 +1,5 @@
 import { Component } from './base/Component';
-import { CardCategoryEnum, ICard, ICardBasket } from '../types';
+import { CardCategoryEnum, ICard, ICardBasket, ICardPreview } from '../types';
 import { ensureElement } from '../utils/utils'
 import { IActions } from "../types"
 
@@ -8,6 +8,7 @@ export class Card<T> extends Component<ICard> {
     protected _title: HTMLElement;
     protected _image: HTMLImageElement;
     protected _price: HTMLElement;
+    // protected _description: HTMLElement;
     
     constructor(container: HTMLElement, actions?: IActions) {
         super(container);
@@ -15,6 +16,8 @@ export class Card<T> extends Component<ICard> {
         this._title = ensureElement<HTMLElement>('.card__title', container);
         this._image = ensureElement<HTMLImageElement>('.card__image', container);
         this._price = ensureElement<HTMLElement>('.card__price', container);
+        // this._description  = ensureElement<HTMLElement>('.card__price', container);
+        
     if (actions?.onClick) container.addEventListener('click', actions.onClick);
     }
 
@@ -73,3 +76,37 @@ export class CardBasket extends Component<ICardBasket> {
         this.setText(this._price, value ? `${value.toString()} синапсов` : 'Бесценно');
     }
   }
+
+
+  export class CardPreview extends Card<ICardPreview> {
+    protected _description: HTMLElement;
+    protected _button: HTMLElement;
+    // protected _text: HTMLElement;
+    
+    constructor(container: HTMLElement, actions?: IActions) {
+        super(container, actions)
+        this._button = container.querySelector(`.card__button`);
+        this._description = ensureElement<HTMLElement>(`.card__text`, container);
+
+        if (actions?.onClick) {
+        if (this._button) {
+            container.removeEventListener('click', actions.onClick);
+            this._button.addEventListener('click', actions.onClick);
+            } 
+        }
+    }
+  
+    set description(value: string) {
+      this.setText(this._description, value);
+    }
+
+    set price(value: number | null) {
+        if(value) {
+            this.setText(this._price, value + ` синапов`);
+        } else {
+            this._button.setAttribute('disabled', 'true');
+            this.setText(this._price, `Бесценно`);
+        };
+     }
+
+}

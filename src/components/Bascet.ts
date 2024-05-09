@@ -12,13 +12,13 @@ export class Basket extends Component<IBasket> {
       super(container);
       this._list = ensureElement<HTMLElement>('.basket__list', this.container);
       this.button = ensureElement<HTMLButtonElement>('.basket__button', this.container);
-      this._total = ensureElement<HTMLElement>('.basket__price');
+      this._total = ensureElement<HTMLElement>('.basket__price', this.container);
       if(this.button) this.button.addEventListener('click', () => events.emit('order:open'));
       
       this.items = [];
     }
   
-    //Заполнить данными в корзину
+    //Заполнить данными корзину
     set items(items: HTMLElement[]) {
       if (items.length) {
           this._list.replaceChildren(...items);
@@ -29,7 +29,14 @@ export class Basket extends Component<IBasket> {
     }
   
     //Установить сумму всех товаров в корзине
-    set total(total: number) {
-      this.setText(this._total, `${total.toString()} синапсов`);
+    set total(val: number) {
+      this.setText(this._total, `${val.toString()} синапсов`);
     }
+
+    getTotal() {
+      return this._total.textContent;
+    }
+
+
+
   }
