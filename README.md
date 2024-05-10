@@ -69,18 +69,6 @@ export enum CardCategoryEnum {
 }
 ```
 
-Перечисление категорий карточек
-
-```
-export enum CardCategoryEnum {
-	'софт-скил' = 'soft',
-	'другое' = 'other',
-	'дополнительное' = 'additional',
-	'кнопка' = 'button',
-	'хард-скил' = 'hard',
-}
-```
-
 Интерфейс карточки в корзине
 ```
 export interface ICardBasket {
