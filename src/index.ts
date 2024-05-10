@@ -36,8 +36,6 @@ const successTemplate = ensureElement<HTMLTemplateElement>('#success');
 
 const appState = new AppState({}, events); // объект модели данных, с состоянием приложения
 
-console.log(CDN_URL, API_URL)
-
 //объект главной страницы
 const page = new Page(document.body, events);
 //объект корзины
@@ -178,8 +176,6 @@ events.on('payment:change', (item: HTMLButtonElement) => {
 events.on(
 	/^order\..*:change/,
 	(data: { field: keyof IOrderForm; value: string }) => {
-		console.log(data.field);
-		console.log(data.value);
 		appState.setOrderField(data.field, data.value);
 	}
 );
