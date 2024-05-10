@@ -1,17 +1,6 @@
 import {Model} from './base/Model';
 import {IAppState, ICard, IOrder, IOrderForm, TFormErrors} from '../types';
 
-
-// interface IAppState {
-//     cardList: ICard[];
-//     basket: string[];
-//     order: IOrder | null;
-//     preview: string | null;
-//     formErrors: TFormErrors;
-
-    
-//  }
-
 export class AppState extends Model<IAppState> {
     cardList: ICard[];
     basket: ICard[] = [];
@@ -30,30 +19,14 @@ export class AppState extends Model<IAppState> {
       return this.basket.length === 0
     }
 
-
-
     //Получить общую сумму заказов
     getTotal () {
-      const s: number = this.basket.reduce(function (accum, item) {
+      return this.basket.reduce(function (accum, item) {
         return accum + item.price
       }, 0);
-      console.log(s);
-      return s;
-
-      // const sum = nums.reduce(function (currentSum, currentNumber) {
-      //   return currentSum + currentNumber
-      // }, 0)
     }
-        
-    // //Получить общую сумму заказов
-    // setTotal (val: string) {
-    //   this.total = val;
-    // }
-
-
 
     //Получить список товара в корзине
-    // get basketList(): ICardItem[] {
     get basketList(): ICard[] {      
       return this.basket
     }
@@ -107,17 +80,18 @@ export class AppState extends Model<IAppState> {
       } 
     }
 
-
   	//Валидация введенных формы котактов
 	validateContacts() {
 		const errors: typeof this.formErrors = {};
 		const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
 		const phoneRegex = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{10}$/;
-		if (this.order.phone.startsWith('8')) this.order.phone = '+7' + this.order.phone.slice(1);
+		
+    if (this.order.phone.startsWith('8')) this.order.phone = '+7' + this.order.phone.slice(1);
+    // console.log(this.order.phone.slice(1));
 		if (!this.order.email) errors.email = 'Необходимо указать email';
-		else if (!emailRegex.test(this.order.email)) errors.email = 'Некорректный адрес электронной почты';
+		  else if (!emailRegex.test(this.order.email)) errors.email = 'Некорректный адрес электронной почты';
 		if (!this.order.phone) errors.phone = 'Необходимо указать телефон';
-		else if (!phoneRegex.test(this.order.phone)) errors.phone ='Некорректный формат номера телефона';
+		  else if (!phoneRegex.test(this.order.phone)) errors.phone ='Некорректный формат номера телефона';
 		this.formErrors = errors;
 		this.events.emit('formErrors:change', this.formErrors);
 		return Object.keys(errors).length === 0;
@@ -147,6 +121,4 @@ export class AppState extends Model<IAppState> {
 			total: 0,
 		};
 	}
-  
-
 }    

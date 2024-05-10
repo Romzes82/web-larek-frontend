@@ -67,22 +67,18 @@ export interface IOrder extends IOrderForm {
 // Алиас формы заказа
 export type TOrderForm = Omit<IOrder, 'total' | 'items'>;
 
-
+//интерфейс корзины
 export interface IBasket {
 	items: string[];
 	total: number;
 }
-
-// //Интерфейс модалки успешного заказа
-// interface ISuccess {
-// 	total: number;
-//   }
 
 //Интерфейс события
 export interface ISuccessActions {
 	onClick: () => void;
 }
 
+//Интерфейс модалки
 export interface IModal {
 	content: HTMLElement;
 }
@@ -119,7 +115,6 @@ export interface IFormValid {
 	errors: string[];
 }
 
-
 //Тип ошибки формы
 export type FormErrors = Partial<Record<keyof IOrder, string>>;
 
@@ -139,16 +134,11 @@ export interface IOrderForm {
 
 //Интерфейс формы успешного заказа
 export interface ISuccess {
-	total: string;
-  }
-
-export interface ISuccessfulForm {
     id: string;
-    total: string;
+	total: string;
 }
 
-
-
-// export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE';
-
-
+// export interface ISuccessfulForm {
+//     id: string;
+//     total: string;
+// }

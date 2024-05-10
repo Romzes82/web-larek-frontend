@@ -119,7 +119,7 @@ events.on('preview:changed', (item: ICard) => {
     });
 });
 
-//При добавлении товароа в корзину, исключается потовр по id, обновляем counter корзины на главной странице
+//При добавлении товара в корзину, исключается потовр по id, обновляем counter корзины на главной странице
 events.on('card:add', (item: ICard) => {
     const findRepeatId = appState.basketList.find((element: ICard) => {
         return (element.id === item.id);
@@ -188,7 +188,7 @@ events.on('formErrors:change', (errors: Partial<IOrderForm>) => {
 
 //Отправляем данные доставки, рендеринг формы контактов
 events.on('order:submit', () => {
-    console.log('appState.getTotal() ' + appState.getTotal())
+    // console.log('appState.getTotal() ' + appState.getTotal())
     appState.order.total = appState.getTotal()
     modal.render({
       content: contact.render({
@@ -219,6 +219,7 @@ events.on('contacts:submit', () => {
               total: pay
         })
         })
+        appState.clearOrder();
     })
     .catch(err => {console.error(err);})
 });

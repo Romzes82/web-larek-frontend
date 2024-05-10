@@ -1,6 +1,6 @@
 // import {Api, ApiListResponse} from './base/Api';
 
-import {ApiListResponse, IAppState, ICard, IOrder, ISuccessfulForm} from '../types';
+import {ApiListResponse, ICard, IOrder, ISuccess } from '../types';
 import { Api } from './base/Api';
 
 
@@ -31,8 +31,8 @@ export class WebLarekApi extends Api {
     }
 
     //возврат данных по заказу, н-р {"id":"d0260fd6-7347-43c1-9626-7d1cdc02a5a4","total":2200}
-    orderCard(order: IOrder): Promise<ISuccessfulForm> {
-        return this.post(`/order`, order).then((data: ISuccessfulForm) => data);
+    orderCard(order: IOrder): Promise<ISuccess> {
+        return this.post(`/order`, order).then((data: ISuccess) => data);
     }
 }
 
