@@ -1,6 +1,6 @@
-import { IOrderForm } from "../types";
-import { Form } from "./Form";
-import { IEvents } from "./base/Events";
+import { IOrderForm } from '../types';
+import { Form } from './Form';
+import { IEvents } from './base/Events';
 
 export class Contacts extends Form<IOrderForm> {
 	constructor(container: HTMLFormElement, events: IEvents) {
@@ -8,10 +8,12 @@ export class Contacts extends Form<IOrderForm> {
 	}
 
 	set phone(value: string) {
-		(this.container.elements.namedItem('phone') as HTMLInputElement).value = value;
+		(this.container.elements.namedItem('phone') as HTMLInputElement).value =
+			value;
 	}
 
 	set email(value: string) {
-		(this.container.elements.namedItem('email') as HTMLInputElement).value = value;
+		(this.container.elements.namedItem('email') as HTMLInputElement).value =
+			value;
 	}
 }

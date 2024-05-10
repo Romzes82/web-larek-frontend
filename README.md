@@ -47,12 +47,12 @@ yarn build
 
 ```
 export interface ICard {
-   id: string;
-   description: string;
-   image: string;
-   title: string;
-   category: string;
-   price: number | null;
+	id: string;
+	description: string;
+	image: string;
+	title: string;
+	category: string;
+	price: number | null;
 }
 
 ```
@@ -60,12 +60,33 @@ export interface ICard {
 Перечисление категорий карточек
 
 ```
-export enum CardCategory {
-    soft =  "софт-скил",
-    other = "другое",
-    additional = "дополнительное",
-    button = "кнопка",
-    hard = "хард-скил"
+export enum CardCategoryEnum {
+	'софт-скил' = 'soft',
+	'другое' = 'other',
+	'дополнительное' = 'additional',
+	'кнопка' = 'button',
+	'хард-скил' = 'hard',
+}
+```
+
+Перечисление категорий карточек
+
+```
+export enum CardCategoryEnum {
+	'софт-скил' = 'soft',
+	'другое' = 'other',
+	'дополнительное' = 'additional',
+	'кнопка' = 'button',
+	'хард-скил' = 'hard',
+}
+```
+
+Интерфейс карточки в корзине
+```
+export interface ICardBasket {
+	index: number;
+	title: string;
+	price: number;
 }
 ```
 
@@ -86,23 +107,16 @@ export interface ICardList {
 }
 ```
 
-Интерфейс заказ
+Интерффейс формы заказа
 
 ```
-export interface IOrder {
-	payment: string;
-	email: string;
-	phone: string;
-	address: string;
-	items: string[];
-	total: number;
+export interface IOrderForm {
+	payment?: string;
+	address?: string;
+	phone?: string;
+	email?: string;
+	total?: string | number;
 }
-```
-
-Тип формы заказа
-
-```
-export type TOrderForm = Omit<IOrder, 'total' | 'items'>;
 ```
 
 ## Архитектура приложения
@@ -112,7 +126,7 @@ export type TOrderForm = Omit<IOrder, 'total' | 'items'>;
 - слой данных, отвечает за хранение и изменение данных
 - презентер, отвечает за связь представления и данных.
 
-![UML представление](uml_larek_1.png)
+![UML представление](uml_larek_2.png)
 
 ### Базовый код
 
@@ -170,21 +184,21 @@ constructor(readonly container: HTMLElement)
 
 ```
 interface IAppState {
-   cardList: ICardItem[];
-   basket: string[];
-   order: IOrder | null;
-   preview: string | null;
-   formErrors: FormErrors;
+	cardList: ICard[];
+	basket: string[];
+	order: IOrder | null;
+	preview: string | null;
+	formErrors: TFormErrors;
 }
 ```
 
 Поля:
 
-- _cardList - ICardItem[];\
-- _basket- ICardItem[];\
-- _order- IOrder;\
-- _preview- string | null;\
-- _formErrors- FormErrors;
+- cardList: ICard[];
+- basket: ICard[] = [];
+- order: IOrder;
+- preview: string | null;
+- formErrors: TFormErrors;
 
 Имеет методы:
 
@@ -201,18 +215,6 @@ interface IAppState {
 - validateOrder - Валидация введенных данных заказа и генерирует событие изменения ошибок формы заказа.
 - validateContacts - Валидация введенных формы котактов.
 - clearOrder - отчистка заказа.
-
-УДАЛИТЬ
-<!-- ```
-interface ICardItem {
-    id: string;
-    title: string;
-    description: string;
-    category: string;
-    image: string;
-    price: number | null;
-}
-``` -->
 
 ### Классы представления
 Все классы представления отвечают за отображение внутри контейнера (DOM-элемент) передаваемых в них данных.
@@ -243,20 +245,9 @@ interface ICardItem {
    - ``set catalog(items: HTMLElement[])`` - вывести список карточек.
    - ``set locked(value: boolean)`` - установка или снятие блока прокрутки страницы.
 
-#### Класс Card - описание карточки товара. Наследуется от класса Component. Имеет двух наследников CardPreview и CardBasket
+#### Класс Card<T> - описание карточки товара. Наследуется от класса Component. Имеет двух наследников CardPreview и CardBasket
 
-   Класс имплементирует интерфейс ICardItem
-   УДАЛИТЬ
-   <!-- ```
-   interface ICard {
-	   category: string;
-	   title: string;
-	   description: string;
-	   image: string;
-	   price: number;
-   } -->
-   ```
-
+   Класс имплементирует интерфейс ICard\
    Имеет следующие поля и методы:
 
    **Поля:**
@@ -265,8 +256,7 @@ interface ICardItem {
    - ``_title``- HTMLElement;
    - ``_image``- HTMLImageElement;
    - ``_price``- HTMLElement;
-   - ``_colors``- <Record<string, string>>;
-
+  
     **Конструктор:**
 
    constructor(container: HTMLElement, actions?: IActions)
@@ -290,7 +280,7 @@ interface ICardItem {
 
    **Поля:**
 
-   - ``_text`` - HTMLElement;
+   - ``_description`` - HTMLElement;
    - ``_button``- HTMLElement;
 
    **Конструктор:**
@@ -299,18 +289,13 @@ interface ICardItem {
 
    **Методы:**
 
-   - ``set text(value: string)`` - принимает строку с сервера, устанавливает текст.
+   - ``set description(value: string)`` - устанавливает описание.
+   - ``set price(value: number | null)`` - устанавливает цену.
+   
 
 #### Класс CardBasket - описание карточки товара в превью. Наследуется от класса Card.
 
-   ```
-   interface ICardBasket {
-	   index: number;
-	   title: string;
-	   price: number;
-   }   
-   ```
-
+   Имплеменриует интерфейс ICardBasket\
    Имеет следующие поля и методы:
 
    **Поля:**
@@ -333,15 +318,7 @@ interface ICardItem {
 
 #### Класс Basket - описание корзины. Наследует класс Component
 
-   Имплеменриует интерфейс IBasket
-   УДАЛИТЬ
-   ```
-   interface IBasket {
-	   items: HTMLElement[];
-	   total: number;
-   }
-   ```
-
+   Имплеменриует интерфейс IBasket\
    Имеет следующие поля и методы:
 
    **Поля:**
@@ -358,6 +335,7 @@ interface ICardItem {
 
    - ``set items(items: HTMLElement[])`` - вставить данные в корзину.
    - ``set total(price: number)`` - посчитать общую стоимость товара.
+   - ``getTotal()`` - возвращает общую стоимость товара.
 
 
 #### Класс Form<T> - класс для работы с формами. Наследуется от класса Component. Имеет двух наследников Order и Contacts
@@ -389,16 +367,7 @@ interface ICardItem {
 
  #### Класс Order - отображение модального окна заполнения адреса. Наследуется от класса Form
 
-   ```
-   interface IOrderForm {
-	   payment?: string;
-	   address?: string;
-	   phone?: string;
-	   email?: string;
-	   total?: string | number;
-   }
-   ```
-
+   Имплеменриует интерфейс IOrderForm\
    Имеет следующие поля и методы:
 
    **Поля:**
@@ -411,23 +380,13 @@ interface ICardItem {
 
    **Методы:**
 
-   - ``set payment(name: string)`` - переключение между кнопками.
-   - ``set address`` - ввод адреса доставки.
+   - ``set payment(name: string)`` - выбор способа оплаты.
+   - ``set address`` - указание адреса доставки.
      
  #### Класс Contacts - отображение модального окна заполнения почты и телефона. Наследуется от класса Form
 
    Имплеменриует интерфейс IOrderForm.
-   УДАЛИТЬ
-   ```
-   interface IOrderForm {
-	   payment?: string;
-	   address?: string;
-	   phone?: string;
-	   email?: string;
-	   total?: string | number;
-   }   
-   ```
-
+ 
    **Конструктор:**
 
    constructor(container: HTMLFormElement, events: IEvents)
@@ -463,7 +422,7 @@ interface ICardItem {
 
    **Методы:**
 
-   - ``set total`` - устанавливет текст в элемент. 
+   - ``set total`` - устанавливет сумму заказа в элемент. 
 
 #### Класс Modal - класс для работы с модальным окном. Наследуется от класса Component
 
@@ -515,20 +474,21 @@ constructor(cdn: string, baseUrl: string, options?: RequestInit)
 
 *Список всех событий, которые могут генерироваться в системе:*\
 *События изменения данных (генерируются классами моделями данных)*
-- items:change - Вызывается при изменении списка товаров. Внутри обработчика каждый товар из списка преобразуется в карточку товара, используя шаблон 'cardCatalogTemplate'. Обработчик клика на карточке устанавливается для передачи события 'card:select' с данными о выбранном товаре. Полученные карточки товаров затем сохраняются в свойстве 'catalog' объекта 'page'.
--preview:change - Вызывается при изменении предварительного просмотра товара. Внутри обработчика создается карточка товара на основе шаблона предварительного просмотра. Обработчик клика на карточке устанавливается для добавления или удаления товара из корзины и соответствующего изменения текста кнопки. После этого карточка товара рендерится и передается для отображения в содержимом модального окна, которое затем открывается.
-- basket:change - Вызывается при изменении содержимого корзины. Внутри обработчика обновляется счетчик товаров на странице, список товаров в корзине и общая сумма товаров. Каждый товар в корзине представляется в виде карточки товара, для которой устанавливается обработчик клика для удаления товара из корзины.
-- formErrors:change - Вызывается при изменении ошибок в форме. Внутри обработчика извлекаются ошибки для различных полей формы, таких как оплата, адрес, электронная почта и телефон. Затем обновляются состояния валидности формы оформления заказа и контактной информации на основе наличия ошибок.
+- ``items:changed`` - изменение продуктов в каталоге
+- ``basket:changed`` - изменение корзины;
+- ``counter:changed`` - изменение счетчика;
+- ``formErrors:change`` - списки ошибок;
 
 *События, возникающие при взаимодействии пользователя с интерфейсом (генерируются классами, отвечающими за представление)*
-- modal:open - Вызывается при открытии модального окна. Внутри обработчика устанавливается значение свойства 'locked' объекта 'page' в 'true'.
-- modal:close - Вызывается при закрытии модального окна. Внутри обработчика устанавливается значение свойства 'locked' объекта 'page' в 'false'.
-- card:select - Вызывается при нажатии карточки товара. Внутри обработчика вызывается метод 'setPreview' объекта 'appData' с передачей выбранного товара.
-- basket:open - Вызывается при открытии корзины. Внутри обработчика происходит рендеринг содержимого корзины и передача его для отображения в модальном окне, после чего модальное окно открывается.
-- order:open - Вызывается при открытии оформления заказа. Внутри обработчика происходит рендеринг содержимого формы оформления заказа с начальными значениями, такими как метод оплаты, адрес доставки, состояние валидности формы и список ошибок. После этого модальное окно открывается для отображения формы оформления заказа.
-- order.*:change - При срабатывании события вызывается функция, которая устанавливает новое значение для указанного поля в форме оформления заказа.
-- contacts.*:change - При срабатывании события вызывается функция, которая устанавливает новое значение для указанного поля в форме оформления заказа.
-- order:submit - Вызывается при нажатии кнопки продолжения заполнения заказа. Внутри обработчика происходит рендеринг содержимого формы контактной информации с начальными значениями, такими как номер телефона, электронная почта, состояние валидности формы и список ошибок. После этого модальное окно открывается для отображения формы контактной информации.
-- contacts:submit - Вызывается при отправке контактной информации. Внутри обработчика отправляются данные заказа на сервер через API. При успешном оформлении заказа создается сообщение об успешном оформлении заказа, которое отображается в модальном окне. После закрытия модального окна происходит очистка корзины и обновление содержимого корзины. Если возникают ошибки при отправке заказа, они выводятся в консоль.
-
-
+- ``card:select`` - выбор карточки;
+- ``card:add`` - добавление карточки в корзину;
+- ``card:remove`` - удаление карточки из корзины;
+- ``preview:changed`` - открытие окна карточки;
+- ``basket:open`` - открытие модального окна корзины;
+- ``order:submit`` - отправка формы доставки;
+- ``contacts:submit`` - отправка формы контактов;
+- ``order:open`` - открытие модального окна адреса доставки;
+- ``payment:toggle`` - изменение способа оплаты;
+- ``/^order\..*:change/`` - изменение поля формы доставки;
+- ``modal:open`` - открытие модального окна;
+- ``modal:close`` - закрытие модального окна;

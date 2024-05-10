@@ -1,38 +1,37 @@
-import {IEvents} from "./base/Events";
-import {Component} from "./base/Component";
-import {ensureElement} from "../utils/utils";
-import {IPage} from "../types";
+import { IEvents } from './base/Events';
+import { Component } from './base/Component';
+import { ensureElement } from '../utils/utils';
+import { IPage } from '../types';
 
 export class Page extends Component<IPage> {
-  protected _counterBasket: HTMLElement;
-  protected _cardList: HTMLElement;
-  protected _wrapper: HTMLElement; 
-  protected _basket: HTMLElement;
+	protected _counterBasket: HTMLElement;
+	protected _cardList: HTMLElement;
+	protected _wrapper: HTMLElement;
+	protected _basket: HTMLElement;
 
-  constructor(container: HTMLElement, protected events: IEvents) {
-    super(container);
+	constructor(container: HTMLElement, protected events: IEvents) {
+		super(container);
 
-    this._counterBasket = ensureElement<HTMLElement>('.header__basket-counter');
-    this._cardList = ensureElement<HTMLElement>('.gallery');
-    this._wrapper = ensureElement<HTMLElement>('.page__wrapper');
-    this._basket = ensureElement<HTMLElement>('.header__basket');
+		this._counterBasket = ensureElement<HTMLElement>('.header__basket-counter');
+		this._cardList = ensureElement<HTMLElement>('.gallery');
+		this._wrapper = ensureElement<HTMLElement>('.page__wrapper');
+		this._basket = ensureElement<HTMLElement>('.header__basket');
 
-    this._basket.addEventListener('click', () => {
-        this.events.emit('basket:open');
-    });
-  }
+		this._basket.addEventListener('click', () => {
+			this.events.emit('basket:open');
+		});
+	}
 
-  set counter(value: number) {
-    this.setText(this._counterBasket, String(value));
-  }
+	set counter(value: number) {
+		this.setText(this._counterBasket, String(value));
+	}
 
-  set catalog(items: HTMLElement[]) {
-    this._cardList.replaceChildren(...items);
-  }
+	set catalog(items: HTMLElement[]) {
+		this._cardList.replaceChildren(...items);
+	}
 
-  //сеттер блокировки скрола страницы, на случай открытия модального окна
-  set locked(value: boolean) {
-    this.toggleClass(this._wrapper, 'page__wrapper_locked', value);
-  }
-
+	//сеттер блокировки скрола страницы, на случай открытия модального окна
+	set locked(value: boolean) {
+		this.toggleClass(this._wrapper, 'page__wrapper_locked', value);
+	}
 }
