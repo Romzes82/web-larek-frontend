@@ -115,9 +115,15 @@ events.on('preview:changed', (item: ICard) => {
 
 //Добавление товара в заказ и корзину, обновление счетчика корзины на главной страницы
 events.on('card:add', (item: ICard) => {
-    appState.addCardToBasket(item);
-    appState.setCardToBasket(item);
-    page.counter = appState.basketList.length;
+    const findRepeatId = appState.basketList.find((element: ICard) => {
+        return (element.id === item.id);
+    });
+    if (!findRepeatId){
+        console.log(findRepeatId);
+        appState.addCardToBasket(item);
+        appState.setCardToBasket(item);
+        page.counter = appState.basketList.length;
+    }
     modal.close();
 })
 
