@@ -1,8 +1,8 @@
-import './scss/styles.scss';//Импорт стилей
+import './scss/styles.scss';
 
-import {API_URL, CDN_URL} from './utils/constants';//Импорт данных сервера
+import {API_URL, CDN_URL} from './utils/constants'; //Импорт констант для обращения к серверу
 import { WebLarekApi } from './components/WebLarekApi';
-import {EventEmitter} from './components/base/Events';//Импорт слушателя
+import {EventEmitter} from './components/base/Events';
 import { AppState } from './components/AppState';
 import { cloneTemplate, ensureElement } from './utils/utils';
 import { Card, CardBasket, CardPreview } from './components/Card';
@@ -14,41 +14,51 @@ import { Order } from './components/OrderForm';
 import { Contacts } from './components/ContactForm';
 import { Success } from './components/Success';
 
-
-const api = new WebLarekApi(CDN_URL, API_URL);//Создаем объект управления Апи
-// Создание объекта для управления событиями и API
+//объект управления Апи
+const api = new WebLarekApi(CDN_URL, API_URL);
+// объект для управления событиями
 const events = new EventEmitter();
 
-const cardCatalogTemplate = ensureElement<HTMLTemplateElement>('#card-catalog'); //Шаблон каталога главной страницы
-const basketTemplate = ensureElement<HTMLTemplateElement>('#basket'); //Шаблон корзины
-const cardPreviewTemplate = ensureElement<HTMLTemplateElement>('#card-preview');//Шаблон превью карточки
-const cardBasketTemplate = ensureElement<HTMLTemplateElement>('#card-basket');//Шаблон карточек в корзине
-const orderTemplate = ensureElement<HTMLTemplateElement>('#order');//Шаблон формы заказа
-const contactsTemplate = ensureElement<HTMLTemplateElement>('#contacts');//Шаблон формы контактов
-const successTemplate = ensureElement<HTMLTemplateElement>('#success');//Шаблон формы успешного заказа
+//Темплейт каталога главной страницы
+const cardCatalogTemplate = ensureElement<HTMLTemplateElement>('#card-catalog'); 
+//Темплейт корзины
+const basketTemplate = ensureElement<HTMLTemplateElement>('#basket'); 
+//Темплейт превью карточки
+const cardPreviewTemplate = ensureElement<HTMLTemplateElement>('#card-preview');
+//Темплейт карточек в корзине
+const cardBasketTemplate = ensureElement<HTMLTemplateElement>('#card-basket');
+//Темплейт формы заказа
+const orderTemplate = ensureElement<HTMLTemplateElement>('#order');
+//Темплейт формы контактов
+const contactsTemplate = ensureElement<HTMLTemplateElement>('#contacts');
+//Темплейт формы успешного заказа
+const successTemplate = ensureElement<HTMLTemplateElement>('#success');
 
-const appState = new AppState({}, events); //Создаем объект модели данных
+const appState = new AppState({}, events); // объект модели данных, с состоянием приложения
 
-const page = new Page(document.body, events);//Создаем объект главной страницы
-const basket = new Basket(cloneTemplate(basketTemplate), events);//Создаем переменную корзины
-const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);//Создаем переменную модального окна
-const delivery = new Order(cloneTemplate(orderTemplate), events);//Создаем переменную формы доставки
-const contact = new Contacts(cloneTemplate(contactsTemplate), events);//Создаем переменную формы контактов
+//объект главной страницы
+const page = new Page(document.body, events);
+//объект корзины
+const basket = new Basket(cloneTemplate(basketTemplate), events);
+//объект модального окна
+const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
+//объект формы доставки
+const delivery = new Order(cloneTemplate(orderTemplate), events);
+//объект формы контактов
+const contact = new Contacts(cloneTemplate(contactsTemplate), events);
 
 
-console.log(API_URL, CDN_URL);
-
-//Блокируем прокрутку страницы если открыто модальное окно
+//Блок прокрутки страницы, если открыто модальное окно
 events.on('modal:open', () => {
     page.locked = true;
 });
 
-//Разблокируем прокрутку страницы если закрыто модальное окно
+//Снятие блока прокрутки страницы, если закрыто модальное окно
 events.on('modal:close', () => {
     page.locked = false;
 });
 
-//Получение и отображение списка карточек
+//Получаем списка карточек и рендерим его на событии items:changed
 api.getCardList()
     .then(appState.setCatalog.bind(appState))
 	.catch((err) => {
@@ -69,9 +79,6 @@ events.on('items:changed', () => {
     });
 });
 
-// console.log(basket.button);
-// console.log(appState.getTotal());
-
 //Открытие корзины, рендеринг его содержимого: товаров и суммы заказа
 events.on('basket:open', () => {
     basket.setDisabled(basket.button, appState.statusBasket);
@@ -85,7 +92,6 @@ events.on('basket:open', () => {
             title: item.title,
             price: item.price,
             index: i++
-            // total: item.total
             });
     })
     modal.render({
@@ -93,7 +99,7 @@ events.on('basket:open', () => {
     })
 })
 
-//Получение данных и открытие превью карточки
+//При выборе карточки, обновляем AppState и рендерим превью карточки в модалке
 events.on('card:select', (item: ICard) => {
     appState.setPreview(item);
   });
@@ -113,13 +119,12 @@ events.on('preview:changed', (item: ICard) => {
     });
 });
 
-//Добавление товара в заказ и корзину, обновление счетчика корзины на главной страницы
+//При добавлении товароа в корзину, исключается потовр по id, обновляем counter корзины на главной странице
 events.on('card:add', (item: ICard) => {
     const findRepeatId = appState.basketList.find((element: ICard) => {
         return (element.id === item.id);
     });
     if (!findRepeatId){
-        console.log(findRepeatId);
         appState.addCardToBasket(item);
         appState.setCardToBasket(item);
         page.counter = appState.basketList.length;
@@ -149,7 +154,7 @@ events.on('card:remove', (item: ICard) => {
     })
 })
 
-//Открытие формы доставки и смена оплаты
+//Формы доставки
 events.on('order:open', () => {
 	modal.render({
 		content: delivery.render({
@@ -165,7 +170,7 @@ events.on('payment:change', (item: HTMLButtonElement) => {
     appState.order.payment = item.name;
 })
 
-//Изменение поля ввода доставки
+//Изменение данных в поле ввода доставки
 events.on(/^order\..*:change/, (data: { field: keyof IOrderForm, value: string }) => {
     appState.setOrderField(data.field, data.value);
 });
@@ -181,7 +186,7 @@ events.on('formErrors:change', (errors: Partial<IOrderForm>) => {
   })
 
 
-  //Отправляем данные доставки и открываем модальное окно контактов
+//Отправляем данные доставки, рендеринг формы контактов
 events.on('order:submit', () => {
     console.log('appState.getTotal() ' + appState.getTotal())
     appState.order.total = appState.getTotal()
@@ -200,7 +205,7 @@ events.on(/^contacts\..*:change/, (data: { field: keyof IOrderForm, value: strin
     appState.setContactsField(data.field, data.value);
 });
 
-//Отправляем форму контактов и открываем окно с успешным заказом
+//Post заказа, рендеринг модалки с успешным заказом
 events.on('contacts:submit', () => {
     api.orderCard(appState.order)
     .then((result) => {
@@ -217,5 +222,4 @@ events.on('contacts:submit', () => {
     })
     .catch(err => {console.error(err);})
 });
-// ToDo заменить Locked на Toggle в Card
-// Card<T> - del <T> ?
+
