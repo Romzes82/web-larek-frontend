@@ -108,6 +108,12 @@ events.on('preview:changed', (item: ICard) => {
 	const card = new CardPreview(cloneTemplate(cardPreviewTemplate), {
 		onClick: () => events.emit('card:add', item),
 	});
+	const findRepeatId = appState.basketList.find((element: ICard) => {
+		return element.id === item.id;
+	});
+	if (findRepeatId) {
+		card.setDisabled()
+	}
 	modal.render({
 		content: card.render({
 			title: item.title,
@@ -121,6 +127,7 @@ events.on('preview:changed', (item: ICard) => {
 
 //При добавлении товара в корзину, исключается повтор по id, обновляем counter корзины на главной странице
 events.on('card:add', (item: ICard) => {
+	//  basket.setDisabled(basket.button, appState.statusBasket);
 	const findRepeatId = appState.basketList.find((element: ICard) => {
 		return element.id === item.id;
 	});
