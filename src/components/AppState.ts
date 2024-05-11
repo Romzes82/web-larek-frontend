@@ -80,10 +80,18 @@ export class AppState extends Model<IAppState> {
 	//Вывести данные введенные в поле доставки
 	setOrderField(field: keyof IOrderForm, value: string) {
 		this.order[field] = value;
+		console.log(this.order)
 		if (this.validateOrder()) {
 			this.events.emit('order:ready', this.order);
 		}
 	}
+
+	// setOrderField(field: keyof Omit<IOrder, 'items' | 'total'>, value: string) {
+	// 	this.order[field] = value;
+	// 	if (this.validateOrder(field)) {
+	// 		this.events.emit('order:ready', this.order);
+	// 	}
+	// }
 
 	// Валидация введенных данных
 	validateOrder() {

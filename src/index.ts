@@ -52,12 +52,15 @@ events.on('modal:open', () => {
 	page.locked = true;
 });
 
+// events.on - устанаваливаем функции-орбработчики на события:
 //Снятие блока прокрутки страницы, если закрыто модальное окно
 events.on('modal:close', () => {
 	page.locked = false;
 });
 
+console.log(events)
 //Получаем списка карточек и рендерим его на событии items:changed
+
 api
 	.getCardList()
 	.then(appState.setCatalog.bind(appState))
@@ -175,14 +178,18 @@ events.on('order:open', () => {
 	appState.order.items = appState.basket.map((item) => item.id);
 });
 
-events.on('payment:change', (item: HTMLButtonElement) => {
+// events.on('payment:change', (item: HTMLButtonElement) => {
+events.on('payment:change', (item: HTMLButtonElement) => {	
 	appState.order.payment = item.name;
+	appState.setOrderField('payment', item.name);
 });
 
 //Изменение данных в поле ввода доставки
 events.on(
+	// /(^order|^payment)\..*:change/,
 	/^order\..*:change/,
 	(data: { field: keyof IOrderForm; value: string }) => {
+		// console.log(data)
 		appState.setOrderField(data.field, data.value);
 	}
 );
