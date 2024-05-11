@@ -32,12 +32,9 @@ export interface IOrderSuccess {
 	total: number;
 }
 
+//Интерфейс модалки
 export interface IModalData {
 	content: HTMLElement;
-}
-
-export interface IOrder extends IOrderForm {
-	items: string[];
 }
 
 //интерфейс корзины
@@ -50,12 +47,6 @@ export interface IBasket {
 export interface ISuccessActions {
 	onClick: () => void;
 }
-
-//Интерфейс модалки
-export interface IModal {
-	content: HTMLElement;
-}
-
 
 export type ApiListResponse<Type> = {
 	total: number;
@@ -92,9 +83,6 @@ export interface IFormValid {
 
 //алиас ошибки формы
 export type TFormErrors = Partial<Record<keyof IOrder, string>>;
-
-//Тип ошибки формы
-export type FormErrors = Partial<Record<keyof IOrder, string>>;
 
 //Интерфейс заказа
 export interface IOrder extends IOrderForm {

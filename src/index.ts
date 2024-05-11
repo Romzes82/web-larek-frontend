@@ -7,7 +7,7 @@ import { AppState } from './components/AppState';
 import { cloneTemplate, ensureElement } from './utils/utils';
 import { Card, CardBasket, CardPreview } from './components/Card';
 import { Page } from './components/Page';
-import { Basket } from './components/Bascet';
+import { Basket } from './components/Basket';
 import { Modal } from './components/Modal';
 import { ICard, IOrderForm } from './types';
 import { Order } from './components/OrderForm';
