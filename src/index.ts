@@ -112,7 +112,8 @@ events.on('preview:changed', (item: ICard) => {
 	const findRepeatId = appState.basketList.find((element: ICard) => {
 		return element.id === item.id;
 	});
-	if (findRepeatId) { // блокируя кнопку "В корзину", исключается дублирование товара по id
+	if (findRepeatId) {
+		// блокируя кнопку "В корзину", исключается дублирование товара по id
 		card.setDisableButton();
 	}
 	modal.render({
