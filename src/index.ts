@@ -112,8 +112,8 @@ events.on('preview:changed', (item: ICard) => {
 	const findRepeatId = appState.basketList.find((element: ICard) => {
 		return element.id === item.id;
 	});
-	if (findRepeatId) {
-		card.setDisabled();
+	if (findRepeatId) { // блокируя кнопку "В корзину", исключается дублирование товара по id
+		card.setDisableButton();
 	}
 	modal.render({
 		content: card.render({
@@ -126,17 +126,11 @@ events.on('preview:changed', (item: ICard) => {
 	});
 });
 
-//При добавлении товара в корзину, исключается повтор по id, обновляем counter корзины на главной странице
+//Добавление товара в корзину, обновляем counter корзины на главной странице
 events.on('card:add', (item: ICard) => {
-	//  basket.setDisabled(basket.button, appState.statusBasket);
-	const findRepeatId = appState.basketList.find((element: ICard) => {
-		return element.id === item.id;
-	});
-	if (!findRepeatId) {
-		appState.addCardToBasket(item);
-		appState.setCardToBasket(item);
-		page.counter = appState.basketList.length;
-	}
+	appState.addCardToBasket(item);
+	appState.setCardToBasket(item);
+	page.counter = appState.basketList.length;
 	modal.close();
 });
 

@@ -114,7 +114,7 @@ export interface IOrderForm {
 - слой данных, отвечает за хранение и изменение данных
 - презентер, отвечает за связь представления и данных.
 
-![UML представление](uml_larek_2.png)
+![UML представление](uml_larek_3.png)
 
 ### Базовый код
 
@@ -279,6 +279,7 @@ interface IAppState {
 
    - ``set description(value: string)`` - устанавливает описание.
    - ``set price(value: number | null)`` - устанавливает цену.
+   - ``setDisableButton()`` - блокирует кнопку поля _button.
    
 
 #### Класс CardBasket - описание карточки товара в превью. Наследуется от класса Card.

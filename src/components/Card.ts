@@ -102,12 +102,13 @@ export class CardPreview extends Card<ICardPreview> {
 		if (value) {
 			this.setText(this._price, value + ` синапсов`);
 		} else {
-			this._button.setAttribute('disabled', 'true');
+			//this._button.setAttribute('disabled', 'true');
+			this.setDisableButton();
 			this.setText(this._price, `Бесценно`);
 		}
 	}
 
-	setDisabled() {
+	setDisableButton() {
 		this._button.setAttribute('disabled', 'true');
 	}
 }
