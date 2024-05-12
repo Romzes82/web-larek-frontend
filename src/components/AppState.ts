@@ -80,26 +80,17 @@ export class AppState extends Model<IAppState> {
 	//Вывести данные введенные в поле доставки
 	setOrderField(field: keyof IOrderForm, value: string) {
 		this.order[field] = value;
-		console.log(this.order)
 		if (this.validateOrder()) {
 			this.events.emit('order:ready', this.order);
 		}
 	}
-
-	// setOrderField(field: keyof Omit<IOrder, 'items' | 'total'>, value: string) {
-	// 	this.order[field] = value;
-	// 	if (this.validateOrder(field)) {
-	// 		this.events.emit('order:ready', this.order);
-	// 	}
-	// }
 
 	// Валидация введенных данных
 	validateOrder() {
 		const errors: typeof this.formErrors = {};
 		if (!this.order.address) {
 			errors.address = 'Необходимо указать адрес';
-		}
-		else if (!this.order.payment) errors.payment = 'Выберите способ оплаты';
+		} else if (!this.order.payment) errors.payment = 'Выберите способ оплаты';
 		this.formErrors = errors;
 		this.events.emit('formErrors:change', this.formErrors);
 		return Object.keys(errors).length === 0;
@@ -109,11 +100,12 @@ export class AppState extends Model<IAppState> {
 	validateContacts() {
 		const errors: typeof this.formErrors = {};
 		const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-		const phoneRegex = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{10}$/;
+		// const phoneRegex = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{10}$/;
+		const phoneRegex = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/;
+		// const phoneRegex = /^\+?[78][-\(]?\d{3}\)?-?\d{3}-?\d{2}-?\d{2}$/;
 
 		if (this.order.phone.startsWith('8'))
 			this.order.phone = '+7' + this.order.phone.slice(1);
-		// console.log(this.order.phone.slice(1));
 		if (!this.order.email) errors.email = 'Необходимо указать email';
 		else if (!emailRegex.test(this.order.email))
 			errors.email = 'Некорректный адрес электронной почты';
@@ -122,6 +114,8 @@ export class AppState extends Model<IAppState> {
 			errors.phone = 'Некорректный формат номера телефона';
 		this.formErrors = errors;
 		this.events.emit('formErrors:change', this.formErrors);
+		console.log('this.order.phone ' + this.order.phone);
+		console.log('errors.phone ' + errors.phone);
 		return Object.keys(errors).length === 0;
 	}
 

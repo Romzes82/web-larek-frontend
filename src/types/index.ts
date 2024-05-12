@@ -24,8 +24,6 @@ export interface IAppState {
 	formErrors: TFormErrors;
 }
 
-
-
 // Интерфейс для типизации ответа сервера в случае успешного оформления заказа
 export interface IOrderSuccess {
 	id: string;

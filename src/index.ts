@@ -58,9 +58,7 @@ events.on('modal:close', () => {
 	page.locked = false;
 });
 
-console.log(events)
-//Получаем списка карточек и рендерим его на событии items:changed
-
+//Получаем список карточек и рендерим его на событии items:changed
 api
 	.getCardList()
 	.then(appState.setCatalog.bind(appState))
@@ -115,7 +113,7 @@ events.on('preview:changed', (item: ICard) => {
 		return element.id === item.id;
 	});
 	if (findRepeatId) {
-		card.setDisabled()
+		card.setDisabled();
 	}
 	modal.render({
 		content: card.render({
@@ -167,6 +165,8 @@ events.on('card:remove', (item: ICard) => {
 //Формы доставки
 events.on('order:open', () => {
 	// delivery.errors = '';
+	appState.order.payment = '';
+	appState.order.address = '';
 	modal.render({
 		content: delivery.render({
 			payment: '',
@@ -176,10 +176,12 @@ events.on('order:open', () => {
 		}),
 	});
 	appState.order.items = appState.basket.map((item) => item.id);
+	appState.order.email = '';
+	appState.order.phone = '';
 });
 
 // events.on('payment:change', (item: HTMLButtonElement) => {
-events.on('payment:change', (item: HTMLButtonElement) => {	
+events.on('payment:change', (item: HTMLButtonElement) => {
 	appState.order.payment = item.name;
 	appState.setOrderField('payment', item.name);
 });
@@ -189,11 +191,9 @@ events.on(
 	// /(^order|^payment)\..*:change/,
 	/^order\..*:change/,
 	(data: { field: keyof IOrderForm; value: string }) => {
-		// console.log(data)
 		appState.setOrderField(data.field, data.value);
 	}
 );
-
 
 //Валидация
 events.on('formErrors:change', (errors: Partial<IOrderForm>) => {

@@ -21,9 +21,7 @@ export class Card<T> extends Component<ICard> {
 
 	set category(value: keyof typeof CardCategoryEnum) {
 		this.setText(this._category, value);
-		this._category.className = `card__category card__category_${
-			CardCategoryEnum[value]
-		}`;
+		this._category.className = `card__category card__category_${CardCategoryEnum[value]}`;
 	}
 
 	set title(value: string) {

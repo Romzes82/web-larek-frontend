@@ -7,7 +7,7 @@ interface IWebLakerApi {
 	orderCard: (order: IOrder) => Promise<ISuccess>;
 }
 
-export class WebLarekApi extends Api implements IWebLakerApi{
+export class WebLarekApi extends Api implements IWebLakerApi {
 	readonly cdn: string;
 
 	constructor(cdn: string, baseUrl: string, options?: RequestInit) {
